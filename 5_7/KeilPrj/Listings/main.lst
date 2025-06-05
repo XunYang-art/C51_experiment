@@ -1,0 +1,56 @@
+C51 COMPILER V9.54   MAIN                                                                  05/06/2025 16:38:30 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          void delay_ms() {
+   4   1          unsigned int i, j;
+   5   1          for(i = 0; i < 500; i++)
+   6   1              for(j = 0; j < 120; j++);
+   7   1      }
+   8          
+   9          // 外部中断0服务函数
+  10          void exti0_function() interrupt 0 {
+  11   1          unsigned char i;
+  12   1          for(i = 0; i < 5; i++) 
+  13   1          {
+  14   2              P1 = 0xF0;
+  15   2              delay_ms();
+  16   2              P1 = 0x0F;
+  17   2              delay_ms();
+  18   2          }
+  19   1          
+  20   1          P1 = 0x00;     
+  21   1      
+  22   1      }
+  23          
+  24          void main() {
+  25   1          IT0 = 0;    // 设置外部中断0为电平触发
+  26   1          EX0 = 1;    // 允许外部中断0
+  27   1          EA = 1;     // 开启总中断
+  28   1          P1 = 0x00;  // P1口初始化，LED全亮
+  29   1      
+  30   1          while(1);   // 主循环等待中断
+  31   1      }
+  32          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     93    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
