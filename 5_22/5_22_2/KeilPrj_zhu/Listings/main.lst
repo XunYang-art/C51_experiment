@@ -1,0 +1,87 @@
+C51 COMPILER V9.54   MAIN                                                                  05/22/2025 14:51:11 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          #define LED P1      // 定义P1口为LED口
+   4          
+   5          void delay(void)
+   6          {
+   7   1          int i,j;
+   8   1          for(i=0;i<500;i++)
+   9   1          {
+  10   2              for(j=0;j<125;j++);
+  11   2          }
+  12   1      
+  13   1      }
+  14          
+  15          
+  16          // 串行初始化函数
+  17          void SerialInit() 
+  18          {
+  19   1          TMOD = 0x20;     // 定时器1，工作在模式2（8位自动重载模式）
+  20   1          TH1 = 0xFD;      // 设置波特率为9600
+  21   1          TL1 = 0xFD;
+  22   1          TR1 = 1;         // 启动定时器1
+  23   1          SM0 = 0;
+  24   1          SM1 = 1;         // 设置串行口为工作在模式1
+  25   1          REN = 1;         // 使能串行接收
+  26   1      }
+  27          
+  28          // 发送数据函数
+  29          void SerialSend(unsigned char i) {
+  30   1          SBUF = i;    // 将数据加载到发送缓冲区
+  31   1          while (TI == 0); // 等待发送完成
+  32   1          TI = 0;          // 清除发送标志
+  33   1      }
+  34          
+  35          // 接收数据函数
+  36          unsigned char SerialReceive() {
+  37   1          while (RI == 0); // 等待接收完成
+  38   1          RI = 0;          // 清除接收标志
+  39   1          return SBUF;     // 返回接收到的数据
+  40   1      }
+  41          
+  42          // 主函数
+  43          void main() {
+  44   1          unsigned char receivedData;
+  45   1          
+  46   1          SerialInit();    // 初始化串行口
+  47   1          LED=0x55;
+  48   1      
+  49   1          while (1) {
+  50   2              // 发送0x55给单片机B
+  51   2              SerialSend(0x55);
+  52   2              
+  53   2              // 接收从单片机B返回的数据
+  54   2              receivedData = SerialReceive();
+C51 COMPILER V9.54   MAIN                                                                  05/22/2025 14:51:11 PAGE 2   
+
+  55   2              delay();
+  56   2              // 将接收到的数据显示在LED上
+  57   2              LED = receivedData;  
+  58   2          }
+  59   1      }
+  60          
+  61          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     86    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

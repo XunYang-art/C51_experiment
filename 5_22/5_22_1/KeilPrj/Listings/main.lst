@@ -1,0 +1,52 @@
+C51 COMPILER V9.54   MAIN                                                                  05/24/2025 21:56:22 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          
+   3          
+   4          unsigned char code segmentCodes[] = {
+   5              0x00, 0x01, 0x02, 0x04, 0x08, 
+   6              0x0F, 0x1F, 0x2F, 0x4F, 0x8F
+   7          };
+   8          
+   9          void delay(unsigned int ms) {
+  10   1          unsigned int i, j;
+  11   1          for (i = 0; i < ms; i++)
+  12   1              for (j = 0; j < 125; j++); 
+  13   1      }
+  14          
+  15          void main() {
+  16   1          unsigned char i;
+  17   1          SCON = 0x00; // ´®¿ÚÄ£Ê½0
+  18   1          while (1) 
+  19   1          {
+  20   2              for (i = 0; i < 10; i++) 
+  21   2              {
+  22   3                  SBUF = segmentCodes[i]; 
+  23   3                  while (!TI); 
+  24   3                  TI = 0; 
+  25   3                  delay(500); 
+  26   3              }
+  27   2          }
+  28   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     62    ----
+   CONSTANT SIZE    =     10    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
