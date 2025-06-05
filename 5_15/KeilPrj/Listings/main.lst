@@ -1,0 +1,104 @@
+C51 COMPILER V9.54   MAIN                                                                  05/15/2025 14:05:32 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: E:\Keil5\C51\BIN\C51.EXE main.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\main.l
+                    -st) OBJECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include <reg51.h>   
+   2          
+   3          sbit START_SW = P3^0;  // 启动开关(P3.0)
+   4          sbit FAULT_SW = P3^2;  // 故障开关(P3.2)
+   5          sbit ALARM_OUT = P3^7; // 报警输出(P3.7)
+   6          unsigned int i, j;
+   7          
+   8          void delay() {
+   9   1          unsigned int i, j;
+  10   1          for(i = 0; i < 1000; i++) 
+  11   1          {      
+  12   2              for(j = 0; j < 125; j++) 
+  13   2              { 
+  14   3                  
+  15   3              }
+  16   2          }
+  17   1      }
+  18          
+  19          // 报警处理函数
+  20          void alarm_handler() interrupt 0
+  21          {
+  22   1          P1 = 0xFF;          
+  23   1          while(FAULT_SW == 0) 
+  24   1          { 
+  25   2              ALARM_OUT = ~ALARM_OUT; 
+  26   2             
+  27   2              
+  28   2              for(i = 0; i < 1; i++) 
+  29   2              {      
+  30   3                  for(j = 0; j < 125; j++) 
+  31   3                  { 
+  32   4                  
+  33   4                  }
+  34   3              }
+  35   2          }
+  36   1          ALARM_OUT = 0;      
+  37   1      }
+  38          
+  39          
+  40          
+  41          void main() {
+  42   1          
+  43   1          IT0 = 0;// 设置外部中断0为电平触发
+  44   1          EX0 = 1;    // 允许外部中断0
+  45   1          EA = 1;// 开启总中断
+  46   1          P1 = 0xFF;
+  47   1          ALARM_OUT = 0;       
+  48   1          
+  49   1          while(1) {
+  50   2              
+  51   2              if(START_SW == 0)
+  52   2              {
+  53   3                  P1 = 0xFE;  
+  54   3                  delay();
+C51 COMPILER V9.54   MAIN                                                                  05/15/2025 14:05:32 PAGE 2   
+
+  55   3                 
+  56   3                  P1 = 0xFD; 
+  57   3                  delay();
+  58   3                  
+  59   3                  P1 = 0xFB;  
+  60   3                  delay();
+  61   3                 
+  62   3                  P1 = 0xF7; 
+  63   3                  delay();
+  64   3                  
+  65   3                  P1 = 0xEF;  
+  66   3                  delay();
+  67   3                  
+  68   3                  P1 = 0xDF;  
+  69   3                  delay();
+  70   3      
+  71   3                  P1 = 0x0F;  
+  72   3                  delay();
+  73   3              }
+  74   2      
+  75   2              // 复位到初始状态
+  76   2              P1 = 0xFF;
+  77   2          }
+  78   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    156    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
