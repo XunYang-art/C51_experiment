@@ -1,0 +1,50 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/20/2025  13:26:18  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+E:\KEIL5\C51\BIN\BL51.EXE .\Objects\prj.obj TO .\Objects\project PRINT (.\Listings\project.m51)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\prj.obj (PRJ)
+
+
+LINK MAP OF MODULE:  .\Objects\project (PRJ)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0010H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\project (PRJ)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        PRJ
+  C:0007H         SYMBOL        LOOP
+  C:0000H         LINE#         2
+  C:0003H         LINE#         3
+  C:0005H         LINE#         4
+  C:0007H         LINE#         7
+  C:0008H         LINE#         8
+  C:0009H         LINE#         9
+  C:000BH         LINE#         10
+  C:000CH         LINE#         11
+  C:000DH         LINE#         12
+  C:000EH         LINE#         13
+  -------         ENDMOD        PRJ
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0010H BYTE ( 0%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=16
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

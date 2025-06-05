@@ -1,0 +1,41 @@
+A51 MACRO ASSEMBLER  PRJ                                                                  04/20/2025 13:26:18 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\prj.obj
+ASSEMBLER INVOKED BY: E:\Keil5\C51\BIN\A51.EXE prj.a51 SET(SMALL) DEBUG PRINT(.\Listings\prj.lst) OBJECT(.\Objects\prj.o
+                      bj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+0000                   1     ORG 0000H        ; ≥Ã–Ú∆ ºµÿ÷∑
+0000 902000            2     MOV DPTR, #2000H ; …Ë÷√Õ‚≤øRAM∆ ºµÿ÷∑
+0003 7820              3     MOV R0, #20H     ; …Ë÷√ƒ⁄≤øRAM∆ ºµÿ÷∑
+0005 7A31              4     MOV R2, #31H     ; …Ë÷√—≠ª∑¥Œ 
+                       5     
+0007                   6     LOOP:
+0007 E0                7     MOVX A, @DPTR    ; ∂¡»°Õ‚≤øRAM æ›µΩ¿€º”∆˜A
+0008 F6                8     MOV @R0, A       ; Ω´ æ›¥Ê»Îƒ⁄≤øRAM
+0009 7400              9     MOV A, #0        ; ◊º±∏«Â¡„ æ›
+000B F0               10     MOVX @DPTR, A    ; Ω´Õ‚≤øRAM‘≠µÿ÷∑«Â¡„
+000C A3               11     INC DPTR         ; Õ‚≤øµÿ÷∑÷∏’Îº”1
+000D 08               12     INC R0           ; ƒ⁄≤øµÿ÷∑÷∏’Îº”1
+000E DAF7             13     DJNZ R2, LOOP    ; —≠ª∑øÿ÷∆
+                      14     
+                      15     END              ; ≥Ã–ÚΩ· ¯
+                                 
+A51 MACRO ASSEMBLER  PRJ                                                                  04/20/2025 13:26:18 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+LOOP . . . . . . .  C ADDR   0007H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
