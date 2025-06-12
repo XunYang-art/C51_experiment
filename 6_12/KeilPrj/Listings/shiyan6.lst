@@ -1,0 +1,353 @@
+C51 COMPILER V9.54   SHIYAN6                                                               06/12/2025 14:21:19 PAGE 1   
+
+
+C51 COMPILER V9.54, COMPILATION OF MODULE SHIYAN6
+OBJECT MODULE PLACED IN .\Objects\shiyan6.obj
+COMPILER INVOKED BY: E:\Keil5\C51\BIN\C51.EXE shiyan6.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\shi
+                    -yan6.lst) OBJECT(.\Objects\shiyan6.obj)
+
+line level    source
+
+   1          #include <reg51.h>
+   2          #include <key.h>
+   3          
+   4          #define uchar unsigned char
+   5              
+   6          uchar key;
+   7          uchar rrr=0xff;
+   8          uchar alldata[12]={0};
+   9          uchar love[14];
+  10          uchar exit=0,yes=0,kind=0,fu=0,pfu=0,position1=0,position2=0;
+  11          unsigned long  data1=0,data2=0,data3=0,ddata=0;
+  12          
+  13          uchar Calcdone_flag = 0;
+  14          
+  15          uchar keyscan(void);
+  16          void  display(uchar);
+  17          void  prodis(void);
+  18          void  clear(void);
+  19          void  datapc(void);
+  20          void remove0(void);
+  21          void  data3dis(void);
+  22          
+  23          void main()
+  24          {
+  25   1          init();
+  26   1          while(1)
+  27   1          {
+  28   2              key=keyscan();
+  29   2              delay();
+  30   2              if(exit==1)
+  31   2              {
+  32   3                  display(key);
+  33   3              }
+  34   2          }
+  35   1      }
+  36          ////扫描键盘子程序/////
+  37          uchar keyscan()
+  38          {
+  39   1      uchar i=0,j=0;
+  40   1      P0=0xf0;
+  41   1      if(((~P0) & 0xf0)!=0)
+  42   1      {
+  43   2       delay();
+  44   2        if(((~P0) & 0xf0)!=0)
+  45   2        {
+  46   3          exit=1;
+  47   3          P0=0xfe;
+  48   3          while(((~P0) & 0x0f)!=0) 
+  49   3         {
+  50   4            if(((~P0) & 0xf0)!=0) 
+  51   4            {
+  52   5              switch((~P0) & 0xf0)
+  53   5                {
+  54   6                case 0x10:
+C51 COMPILER V9.54   SHIYAN6                                                               06/12/2025 14:21:19 PAGE 2   
+
+  55   6                j=0;break;
+  56   6                case 0x20:
+  57   6                j=1;break;
+  58   6                case 0x40:
+  59   6                j=2;break;
+  60   6                case 0x80:
+  61   6                j=3;break;
+  62   6                }
+  63   5                
+  64   5              return(4*i+j);
+  65   5            }
+  66   4            else
+  67   4            {  
+  68   5             P0=P0<<1;
+  69   5             i++;
+  70   5            }
+  71   4         }
+  72   3        }
+  73   2      }
+  74   1          exit=0;
+  75   1          return(key);
+  76   1      }
+  77          
+  78          ////送液晶屏显示子程序/////
+  79          void display(uchar C)
+  80          {
+  81   1         if(Calcdone_flag==1 && C!=2) // 等号键除外
+  82   1        {
+  83   2          clear();
+  84   2          Calcdone_flag = 0; // 重置标志 
+  85   2        } 
+  86   1      
+  87   1          switch(C)
+  88   1          {
+  89   2          case 0:
+  90   2              clear();
+  91   2          break;
+  92   2          case 1:
+  93   2              prodis();
+  94   2              alldata[rrr]=0;
+  95   2              wrdata('0');
+  96   2              break;
+  97   2          case 2:
+  98   2              prodis();
+  99   2              wrdata('=');       /////////////////
+ 100   2              kind=kind+10;
+ 101   2              position2=rrr;
+ 102   2              datapc();
+ 103   2              remove0();
+ 104   2              data3dis();
+ 105   2          
+ 106   2              Calcdone_flag = 1;
+ 107   2          
+ 108   2              break;
+ 109   2          case 3:
+ 110   2              prodis();
+ 111   2              kind=kind+1;             /////////加法运算， kind=1
+ 112   2              position1=rrr;
+ 113   2              wrdata('+');
+ 114   2              break;
+ 115   2          case 4:
+ 116   2              prodis();
+C51 COMPILER V9.54   SHIYAN6                                                               06/12/2025 14:21:19 PAGE 3   
+
+ 117   2              alldata[rrr]=1;
+ 118   2              wrdata('1');
+ 119   2              break;
+ 120   2          case 5:
+ 121   2              prodis();
+ 122   2              alldata[rrr]=2;
+ 123   2              wrdata('2');
+ 124   2              break;
+ 125   2          case 6:
+ 126   2              prodis();
+ 127   2              alldata[rrr]=3;
+ 128   2              wrdata('3');
+ 129   2          break;
+ 130   2          case 7:
+ 131   2              prodis();
+ 132   2              kind=kind+5;             ////////////减法运算， kind=5
+ 133   2              position1=rrr;
+ 134   2              wrdata('-');
+ 135   2          break;
+ 136   2          case 8:
+ 137   2              prodis();
+ 138   2              alldata[rrr]=4;
+ 139   2              wrdata('4');
+ 140   2          break;
+ 141   2          case 9:
+ 142   2              prodis();
+ 143   2              alldata[rrr]=5;
+ 144   2              wrdata('5');
+ 145   2          break;
+ 146   2          case 10:
+ 147   2              prodis();
+ 148   2              alldata[rrr]=6;
+ 149   2              wrdata('6');
+ 150   2          break;
+ 151   2          case 11:
+ 152   2              prodis();
+ 153   2              kind=kind+25;             /////////////乘法运算， kind=25
+ 154   2              position1=rrr;
+ 155   2              wrdata('*');
+ 156   2          break;
+ 157   2          case 12:
+ 158   2              prodis();
+ 159   2              alldata[rrr]=7;
+ 160   2              wrdata('7');
+ 161   2          break;
+ 162   2          case 13:
+ 163   2              prodis();
+ 164   2              alldata[rrr]=8;
+ 165   2              wrdata('8');
+ 166   2          break;
+ 167   2          case 14:
+ 168   2              prodis();
+ 169   2              alldata[rrr]=9;
+ 170   2              wrdata('9'); 
+ 171   2          break;
+ 172   2          case 15:
+ 173   2              prodis();
+ 174   2              kind=kind+125;              ///////////////除法运算， kind=125
+ 175   2              position1=rrr;
+ 176   2              wrdata('/');   
+ 177   2          break;
+ 178   2          default:
+C51 COMPILER V9.54   SHIYAN6                                                               06/12/2025 14:21:19 PAGE 4   
+
+ 179   2              break;
+ 180   2       }
+ 181   1      }
+ 182          void datapc(void)
+ 183          {
+ 184   1      uchar k;
+ 185   1      if((position1==0) || (position2==(position1+1)))
+ 186   1      yes=1;
+ 187   1      else
+ 188   1      {
+ 189   2        for(k=0;k<position1;k++)
+ 190   2        {
+ 191   3          ddata=shi(position1-1-k);
+ 192   3          data1=data1+(alldata[k])*ddata;  
+ 193   3        }
+ 194   2      
+ 195   2        for(k=position1+1;k<position2;k++)
+ 196   2        {
+ 197   3          ddata=shi(position2-1-k);
+ 198   3          data2=data2+(alldata[k])*ddata;  
+ 199   3        }
+ 200   2        if((data1 > 50000) || (data2 > 50000))
+ 201   2          {yes=2;}
+ 202   2        else
+ 203   2        {
+ 204   3          switch (kind)
+ 205   3          {
+ 206   4              case 11:  data3=data1+data2;  yes=0;break;
+ 207   4              case 15: 
+ 208   4              if(data1<data2)
+ 209   4              {ddata=data1;data1=data2;data2=ddata;fu=1;}
+ 210   4              data3=data1-data2;  yes=0;break;
+ 211   4              case 35: data3=data1*data2;  yes=0;break;
+ 212   4              case 135:data3=data1/data2;  yes=0;break;
+ 213   4              default:                     yes=1;
+ 214   4          }
+ 215   3        }
+ 216   2      }
+ 217   1       if(yes==0)
+ 218   1       {
+ 219   2          love[0]=data3 / 1000000000;
+ 220   2          love[1]=data3 / 100000000-love[0]*10;
+ 221   2          love[2]=data3 / 10000000- love[0]*100-    love[1]*10;
+ 222   2          love[3]=data3 / 1000000-  love[0]*1000-   love[1]*100- love[2]*10;
+ 223   2          love[4]=data3 / 100000-   love[0]*10000-  love[1]*1000-love[2]*100-love[3]*10;
+ 224   2          love[5]=data3 / 10000-    love[0]*100000- love[1]*10000-love[2]*1000-love[3]*100-love[4]*10;
+ 225   2          love[6]=(data3 % 10000)/1000;
+ 226   2          love[7]=(data3 % 1000)/100;
+ 227   2          love[8]=(data3 % 100)/10;
+ 228   2          love[9]= data3 % 10;
+ 229   2       }
+ 230   1       if(kind==135)
+ 231   1       {
+ 232   2          love[10]=0xfe;
+ 233   2          love[11]=((data1 % data2)*10)/data2;
+ 234   2          love[12]=((((data1 % data2)*10)%data2)*10)/data2;
+ 235   2          love[13]=((((((data1 % data2)*10)%data2)*10)%data2)*10)/data2;
+ 236   2       }
+ 237   1      }
+ 238          
+ 239          void remove0(void)
+ 240          {
+C51 COMPILER V9.54   SHIYAN6                                                               06/12/2025 14:21:19 PAGE 5   
+
+ 241   1          uchar k=0;
+ 242   1          while((love[k]==0) && (k<=8))
+ 243   1          {
+ 244   2          love[k]=0xf0;
+ 245   2          k++;
+ 246   2          }
+ 247   1          pfu=k;
+ 248   1      }
+ 249          
+ 250          void data3dis(void)
+ 251          {
+ 252   1          uchar k;
+ 253   1          if(yes==0)
+ 254   1          {
+ 255   2              if(kind==135)
+ 256   2              {
+ 257   3                  for(k=0;k<=13;k++)
+ 258   3                  {
+ 259   4                      wrcmd(0xc2+k);
+ 260   4                      wrdata(love[k]+0x30);
+ 261   4                      delay();
+ 262   4                  }
+ 263   3              }     
+ 264   2              else
+ 265   2              {
+ 266   3                  for(k=0;k<=9;k++)
+ 267   3                  {
+ 268   4                      wrcmd(0xc6+k);
+ 269   4                      wrdata(love[k]+0x30);
+ 270   4                      delay();
+ 271   4                  }
+ 272   3                  if(fu==1)
+ 273   3                  {
+ 274   4                      wrcmd(0xc5+pfu);wrdata('-');delay();
+ 275   4                  }
+ 276   3              }
+ 277   2          }
+ 278   1          else if(yes==1)
+ 279   1              error();
+ 280   1          else if(yes==2)
+ 281   1              out();
+ 282   1      }
+ 283          
+ 284          void clear(void)
+ 285          {
+ 286   1          uchar k;
+ 287   1          
+ 288   1          while(((~P0) & 0xf0)!=0);
+ 289   1          for(k=0;k<=15;k++)
+ 290   1          {
+ 291   2              wrcmd(k+0x80);
+ 292   2              delay();
+ 293   2              wrdata(' ');
+ 294   2          }
+ 295   1          
+ 296   1          for(k=0;k<=15;k++)
+ 297   1          {
+ 298   2              wrcmd(k+0xc0);
+ 299   2              delay();
+ 300   2              wrdata(' ');
+ 301   2          }
+ 302   1          
+C51 COMPILER V9.54   SHIYAN6                                                               06/12/2025 14:21:19 PAGE 6   
+
+ 303   1          rrr=0xff;
+ 304   1          kind=yes=position1=position2=0;                  ///////////清运算类型标志
+ 305   1          fu=pfu=0;
+ 306   1          data1=data2=0;                                   ///////////清数据
+ 307   1          data3=0;
+ 308   1          Calcdone_flag = 0; // 重置计算完成标志
+ 309   1      }
+ 310          
+ 311          void prodis(void)
+ 312          {
+ 313   1          rrr++;
+ 314   1          if(rrr==16)
+ 315   1          {rrr=0x40;}
+ 316   1          wrcmd(rrr+0x80);
+ 317   1          delay();
+ 318   1          while(((~P0) & 0xf0)!=0);
+ 319   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =   1958    ----
+   CONSTANT SIZE    =     20    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     52      23
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
